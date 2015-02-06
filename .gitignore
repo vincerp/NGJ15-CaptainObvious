@@ -1,0 +1,16 @@
+Temp/
+Build/
+Library/
+obj/
+*.suo
+*.sln
+*.sln.docstates
+*.csproj
+*.unityproj
+*.pidb
+*.userprefs
+*.DS_Store
+Thumbs.db
+Assets/Plugins/x86.meta
+Assets/Plugins/x86/theorawrapper.dll.meta
+*.pkf
