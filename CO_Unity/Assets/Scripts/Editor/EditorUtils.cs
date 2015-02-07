@@ -127,7 +127,7 @@ public class EditorUtils {
 		Debug.Log("yeah");
 		Transform obj = Selection.activeGameObject.transform;
 		Undo.RecordObject(obj, "Scale Randomized");
-		obj.localScale = new Vector3(Random.Range(0.25f, 1.5f), Random.Range(0.25f, 1.5f), Random.Range(0.25f, 1.5f));
+		obj.localScale = new Vector3(Random.Range(0.5f, 1.5f), Random.Range(0.5f, 1.5f), Random.Range(0.5f, 1.5f))*obj.localScale.magnitude;
 	}
 
 	[MenuItem("GameObject/Randomize Y %#r")]
