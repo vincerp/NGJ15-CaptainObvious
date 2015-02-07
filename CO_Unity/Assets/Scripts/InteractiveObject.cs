@@ -52,7 +52,6 @@ public class InteractiveObject : MonoBehaviour, Interactable {
 			if( !currentItems.Contains( this ) )
 			{
 				currentItems.Add( this );
-				Debug.Log("currentItems added " + gameObject.name);
 			}
 		}
 	}
@@ -71,7 +70,6 @@ public class InteractiveObject : MonoBehaviour, Interactable {
 			if(currentItems.Contains( this) )
 			{
 				currentItems.Remove( this ) ;
-				Debug.Log("currentItems removed " + gameObject.name);
 			}
 		}
 	}
@@ -91,7 +89,6 @@ public class InteractiveObject : MonoBehaviour, Interactable {
 				everythingIsIncluded = false;
 
 		return everythingIsIncluded;
-//		return objToContainToInteract.Contains( itemInHands );
 	}
 
 	virtual public void Picked(){ onPicked.Invoke(); }
