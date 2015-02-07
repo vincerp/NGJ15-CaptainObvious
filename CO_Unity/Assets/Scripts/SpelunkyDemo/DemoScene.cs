@@ -79,8 +79,8 @@ public class DemoScene : MonoBehaviour
 			if( transform.localScale.x < 0f )
 				transform.localScale = new Vector3( -transform.localScale.x, transform.localScale.y, transform.localScale.z );
 
-			if( _controller.isGrounded )
-				_animator.Play( Animator.StringToHash( "Run" ) );
+            if (_controller.isGrounded)
+                _animator.SetBool("moving", true);
 		}
 		else if( Input.GetAxis("Move") < -0.01f )
 		{
@@ -89,22 +89,31 @@ public class DemoScene : MonoBehaviour
 				transform.localScale = new Vector3( -transform.localScale.x, transform.localScale.y, transform.localScale.z );
 
 			if( _controller.isGrounded )
-				_animator.Play( Animator.StringToHash( "Run" ) );
+                _animator.SetBool("moving", true);
 		}
 		else
 		{
+            _animator.SetBool("moving", false);
 			normalizedHorizontalSpeed = 0;
 
 			if( _controller.isGrounded )
-				_animator.Play( Animator.StringToHash( "Idle" ) );
+            {
+                if (Input.GetButtonDown("Punch"))
+                    _animator.SetTrigger("punch");
+            }
 		}
 
-
 		// we can only jump whilst grounded
-		if( _controller.isGrounded && Input.GetButtonDown("Jump") )
+		if( _controller.isGrounded)
 		{
-			_velocity.y = Mathf.Sqrt( 2f * jumpHeight * -gravity );
-			_animator.Play( Animator.StringToHash( "Jump" ) );
+            if(_animator.GetBool("jumping") == true)
+                _animator.SetBool("jumping", false);
+
+            if(Input.GetButtonDown("Jump"))
+            {
+			    _velocity.y = Mathf.Sqrt( 2f * jumpHeight * -gravity );
+                _animator.SetBool("jumping", true);
+            }
 		}
 
 
