@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 
 public class DemoScene : MonoBehaviour
@@ -18,9 +19,17 @@ public class DemoScene : MonoBehaviour
 	private Animator _animator;
 	private RaycastHit2D _lastControllerColliderHit;
 	private Vector3 _velocity;
-
-
-
+	
+	Character playerCharacter;
+	[Header("Movement messages:")]
+	[SerializeField]float timeSpentStopped = 0f;
+	[SerializeField]List<InputAwareMessage> notWalkingMessages;
+	[SerializeField]float timeSpentWalking = 0f;
+	[SerializeField]List<InputAwareMessage> walkingMessages;
+	
+	[Header("Input messages:")]
+	[SerializeField]List<CountedMessage> jumpMessages;
+	int timesJumped = 0;
 
 	void Awake()
 	{
@@ -31,6 +40,7 @@ public class DemoScene : MonoBehaviour
 		_controller.onControllerCollidedEvent += onControllerCollider;
 		_controller.onTriggerEnterEvent += onTriggerEnterEvent;
 		_controller.onTriggerExitEvent += onTriggerExitEvent;
+		playerCharacter = GetComponent<Character>();
 	}
 
 
@@ -78,6 +88,9 @@ public class DemoScene : MonoBehaviour
 
             if (_controller.isGrounded)
                 _animator.SetBool("moving", true);
+
+			timeSpentWalking += Time.deltaTime;
+			timeSpentStopped = 0f;
 		}
 		else if( Input.GetAxis("Move") < -0.01f )
 		{
@@ -86,7 +99,10 @@ public class DemoScene : MonoBehaviour
 				transform.localScale = new Vector3( -transform.localScale.x, transform.localScale.y, transform.localScale.z );
 
 			if( _controller.isGrounded )
-                _animator.SetBool("moving", true);
+				_animator.SetBool("moving", true);
+
+			timeSpentWalking += Time.deltaTime;
+			timeSpentStopped = 0f;
 		}
 		else
 		{
@@ -97,7 +113,22 @@ public class DemoScene : MonoBehaviour
             {
                 if (Input.GetButtonDown("Punch"))
                     _animator.SetTrigger("punch");
-            }
+			}
+
+			timeSpentStopped += Time.deltaTime;
+		}
+		
+		foreach(var tsw in walkingMessages){
+			if(!tsw.used && timeSpentWalking > tsw.count){
+				playerCharacter.Speak(tsw.message);
+				tsw.used = true;
+			}
+		}
+		foreach(var tss in notWalkingMessages){
+			if(!tss.used && timeSpentStopped > tss.count){
+				playerCharacter.Speak(tss.message);
+				tss.used = true;
+			}
 		}
 
 		// we can only jump whilst grounded
@@ -110,6 +141,11 @@ public class DemoScene : MonoBehaviour
             {
 			    _velocity.y = Mathf.Sqrt( 2f * jumpHeight * -gravity );
                 _animator.SetBool("jumping", true);
+				timesJumped++;
+				foreach(var jm in jumpMessages){
+					if(jm.count == timesJumped)playerCharacter.Speak(jm.message);
+				}
+
             }
 		}
 
@@ -124,4 +160,18 @@ public class DemoScene : MonoBehaviour
 		_controller.move( _velocity * Time.deltaTime );
 	}
 
+}
+[System.Serializable]
+public class InputAwareMessage{
+	public float count;
+	public string message;
+	public bool used = false;
+	
+	public InputAwareMessage(float count, string message){
+		this.count = count;
+		this.message = message;
+		used = false;
+	}
+	
+	
 }

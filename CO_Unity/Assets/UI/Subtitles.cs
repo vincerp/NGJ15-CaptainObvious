@@ -17,9 +17,6 @@ public class Subtitles : MonoBehaviour
 	void Awake()
 	{
 		_instance = this;
-	}
-
-	void Start () {
 		txt = GetComponent<Text>();
 	}
 
