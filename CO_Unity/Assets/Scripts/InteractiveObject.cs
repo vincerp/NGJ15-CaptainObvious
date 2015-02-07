@@ -49,7 +49,6 @@ public class InteractiveObject : MonoBehaviour, Interactable {
 		if( !currentItems.Contains( this ) )
 		{
 			currentItems.Add( this );
-			Debug.Log("OnTriggerEnter2D");
 		}
 
 		if( interactionSign == null )
@@ -71,7 +70,6 @@ public class InteractiveObject : MonoBehaviour, Interactable {
 
 		if(currentItems.Contains( this) )
 		{
-			Debug.Log("OnTriggerExit2D");
 			currentItems.Remove( this ) ;
 		}
 

@@ -97,10 +97,11 @@ public class Interactor : MonoBehaviour
 		}
 		else
 		{
-			pickUp.transform.SetParent( transform );
-		//	pickUp.transform.GetComponentInChildren<Rigidbody2D>().isKinematic = false;
+			pickUp.transform.parent.SetParent( transform );
 
-			foreach( Collider2D col in pickUp.GetComponentsInChildren<Collider2D>() )
+			pickUp.transform.GetComponentInParent<Rigidbody2D>().isKinematic = true;
+
+			foreach( Collider2D col in pickUp.transform.parent.GetComponentsInChildren<Collider2D>() )
 				col.enabled = false;
 
 			_pushedObject = pickUp;
@@ -109,10 +110,12 @@ public class Interactor : MonoBehaviour
 
 	public void StopPushing()
 	{
-		foreach( Collider2D col in _pushedObject.GetComponentsInChildren<Collider2D>() )
+		_pushedObject.transform.GetComponentInParent<Rigidbody2D>().isKinematic = false;
+
+		foreach( Collider2D col in _pushedObject.transform.parent.GetComponentsInChildren<Collider2D>() )
 			col.enabled = true;
 
-		_pushedObject.transform.parent = null;
+		_pushedObject.transform.parent.SetParent( null );
 		_pushedObject = null;
 	}
 
