@@ -4,26 +4,47 @@ using System.Collections;
 
 public class SpeechBubble : MonoBehaviour 
 {
-//	private SpriteRenderer _speechBubbleSprite = null;
 	private Text _speechTextRenderer = null;
+	private Image _speechBubbleRenderer = null;
+
+	private Vector3 originalScale;
+	private Vector3 currentScale;
+	private float originalLettersCount;
 
 	void Awake()
 	{
 		_speechTextRenderer = GetComponentInChildren<Text>();
+		_speechBubbleRenderer = transform.FindChild("Bubble").GetComponent<Image>();
+
+		originalScale = _speechBubbleRenderer.transform.localScale;
+		originalLettersCount = _speechTextRenderer.text.Length + 1;
+
+		currentScale = _speechTextRenderer.transform.localScale;
 	}
 
 	public void Activate(string text = null)
 	{
 		if( !string.IsNullOrEmpty(text) )
+		{
 			_speechTextRenderer.text = text;
 
-//		_speechBubbleSprite.enabled = true;
+			_speechBubbleRenderer.transform.localScale = new Vector3(originalScale.x * ((float) text.Length / (float) originalLettersCount), 
+			                                                        originalScale.y, originalScale.z);
+
+		}
+
 		gameObject.SetActive(true);
 	}
 
 	public void Deactivate()
 	{
-//		_speechBubbleSprite.enabled = false;
 		gameObject.SetActive(false);
+	}
+
+	void Update()
+	{
+		_speechTextRenderer.transform.localScale = new Vector3(currentScale.x * 
+		                                                       Mathf.Sign(transform.parent.localScale.x), 
+		                                                       currentScale.y, currentScale.z);
 	}
 }

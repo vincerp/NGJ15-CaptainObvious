@@ -12,6 +12,9 @@ public class DemoScene : MonoBehaviour
 	public float inAirDamping = 5f;
 	public float jumpHeight = 3f;
 
+	[SerializeField]AudioClip jumpSound;
+	[SerializeField]AudioClip landSound, stepSound;
+
 	[HideInInspector]
 	private float normalizedHorizontalSpeed = 0;
 
@@ -134,14 +137,17 @@ public class DemoScene : MonoBehaviour
 		// we can only jump whilst grounded
 		if( _controller.isGrounded)
 		{
-            if(_animator.GetBool("jumping") == true)
-                _animator.SetBool("jumping", false);
-
-            if(Input.GetButtonDown("Jump"))
+            if(_animator.GetBool("jumping") == true){
+				_animator.SetBool("jumping", false);
+				audio.PlayOneShot(landSound);
+			}
+			
+			if(Input.GetButtonDown("Jump"))
             {
 			    _velocity.y = Mathf.Sqrt( 2f * jumpHeight * -gravity );
                 _animator.SetBool("jumping", true);
 				timesJumped++;
+				audio.PlayOneShot(jumpSound);
 				foreach(var jm in jumpMessages){
 					if(jm.count == timesJumped)playerCharacter.Speak(jm.message);
 				}
@@ -158,6 +164,11 @@ public class DemoScene : MonoBehaviour
 		_velocity.y += gravity * Time.deltaTime;
 
 		_controller.move( _velocity * Time.deltaTime );
+	}
+
+	public void StepSound(){
+		audio.PlayOneShot(stepSound);
+
 	}
 
 }

@@ -12,8 +12,12 @@ public class Puncher : MonoBehaviour {
 
 	Character playerCharacter;
 
+	[SerializeField]AudioClip punchAudio;
+	AudioSource audioSource;
+
 	void Start(){
 		playerCharacter = GetComponentInParent<Character>();
+		audioSource = GetComponentInParent<AudioSource>();
 	}
 
 	void Update () {
@@ -24,6 +28,7 @@ public class Puncher : MonoBehaviour {
 			foreach(var c in allStuff){
 				c.SendMessage("OnPunched", SendMessageOptions.DontRequireReceiver);
 			}
+			audioSource.PlayOneShot(punchAudio);
 			timesPunched++;
 			foreach(var m in messages){
 				if(timesPunched == m.count) playerCharacter.Speak(m.message);
