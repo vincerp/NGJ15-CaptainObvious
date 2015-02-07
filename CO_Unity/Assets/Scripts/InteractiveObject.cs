@@ -2,14 +2,32 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
 
-public class InteractiveObject : MonoBehaviour {
+interface Interactable
+{
+	void Picked();
+	void Dropped();
+	void Punched();
+	void Interacted();
+	void Pushed();
+}
 
-	static InteractiveObject current;
+public class InteractiveObject : MonoBehaviour, Interactable {
+
+	static InteractiveObject current = null;
+	static public InteractiveObject Current
+	{
+		get{ return current; }
+	}
+
+	[SerializeField]UnityEvent onPicked;
+	[SerializeField]UnityEvent onDropped;
+	[SerializeField]UnityEvent onPunched;
+	[SerializeField]UnityEvent onInteracted;
+	[SerializeField]UnityEvent onPushed;
+
 
 	[SerializeField]Transform interactionSign;
 	Vector3 signScale;
-
-	[SerializeField]UnityEvent onInteract;
 
 	void Start(){
 		signScale = interactionSign.localScale;
@@ -46,11 +64,13 @@ public class InteractiveObject : MonoBehaviour {
 		if(current == this) current = null;
 	}
 
-	public static bool TryInteract(){
-		if(current){
-			current.onInteract.Invoke();
-			return true;
-		}
-		return false;
+	public static bool isObjectToInteract(){
+		return current != null;
 	}
+
+	virtual public void Picked(){ onPicked.Invoke(); }
+	virtual public void Dropped(){ onDropped.Invoke(); }
+	virtual public void Punched(){ onPushed.Invoke(); }
+	virtual public void Interacted(){ onInteracted.Invoke(); }
+	virtual public void Pushed(){ onPushed.Invoke(); }
 }

@@ -1,15 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Interactor : MonoBehaviour {
-
+public class Interactor : MonoBehaviour 
+{
 	void Update () {
 		if(Input.GetButton("Interact")){
-			if(InteractiveObject.TryInteract()){
-				//Interaction successful
+			if(InteractiveObject.isObjectToInteract()){
+				InteractiveObject.Current.Interacted();
+			}
+		}
 
-				//TODO: Play character activation animation
-			}//else = not possible to interact
+		if( Input.GetButton("Punch"))
+		{
+			if(InteractiveObject.isObjectToInteract())
+			{
+				InteractiveObject.Current.Punched();
+			}
+		}
+
+		if( Input.GetButton("PickUp"))
+		{
+			if(InteractiveObject.isObjectToInteract())
+			{
+				InteractiveObject.Current.Picked();
+			}
 		}
 	}
 }
+
