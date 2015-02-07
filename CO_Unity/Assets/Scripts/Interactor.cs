@@ -72,5 +72,17 @@ public class Interactor : MonoBehaviour
 
 		Destroy( jointToRemove );
 	}
+
+	public void MoveTo(Transform to){
+		iTween.CameraFadeAdd();
+		iTween.CameraFadeTo(1f, 0.3f);
+		StartCoroutine(MovePostFade(to));
+	}
+
+	IEnumerator MovePostFade(Transform to){
+		yield return new WaitForSeconds(0.3f);
+		transform.position = to.position;
+		iTween.CameraFadeTo(0f, 0.3f);
+	}
 }
 
