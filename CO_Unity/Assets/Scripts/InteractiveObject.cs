@@ -38,7 +38,7 @@ public class InteractiveObject : MonoBehaviour, Interactable {
 		if(col.tag == "Player"){
 			//show interaction sign
 			Hashtable args = new Hashtable(){
-				{"scale", Vector3.one},
+				{"scale", signScale},
 				{"time", 0.3f},
 				{"easetype", "easeOutBack"}
 			};
