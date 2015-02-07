@@ -39,13 +39,18 @@ public class Interactor : MonoBehaviour
 		{
 			if( _pickedUpObject.Count > 0 )
 			{
-//				foreach( InteractiveObject obj in _pickedUpObject )
-				_pickedUpObject[0].Dropped();
+				foreach( InteractiveObject obj in _pickedUpObject )
+					obj.Dropped();
+
+				Drop();
 			}
 			else
 			{
 				foreach( InteractiveObject obj in InteractiveObject.Current )
 					obj.Picked();
+
+				foreach( InteractiveObject obj in InteractiveObject.Current )
+					Pickup( obj );
 			}
 		}
 
@@ -56,7 +61,7 @@ public class Interactor : MonoBehaviour
 		}
 	}
 
-	public void Pickup( InteractiveObject pickUp )
+	private void Pickup( InteractiveObject pickUp )
 	{
 		if( !_pickedUpObject.Contains( pickUp ) )
 		{
@@ -67,7 +72,7 @@ public class Interactor : MonoBehaviour
 		}
 	}
 
-	public void Drop(  )
+	private void Drop(  )
 	{
 		foreach( InteractiveObject pickUp in _pickedUpObject )
 		{
