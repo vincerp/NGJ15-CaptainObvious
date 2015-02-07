@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Holster : InteractiveObject {
+public class Holse : InteractiveObject {
 
 	private LineRenderer _lineRenderer;
 
