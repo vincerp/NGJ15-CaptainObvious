@@ -16,7 +16,7 @@ public class InteractiveObject : MonoBehaviour {
 		interactionSign.localScale = Vector3.zero;
 	}
 
-	void OnTriggerEnter2D(Collider2D col){
+	protected void OnTriggerEnter2D(Collider2D col){
 		if(col.tag == "Player"){
 			//show interaction sign
 			Hashtable args = new Hashtable(){
