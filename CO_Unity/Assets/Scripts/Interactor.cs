@@ -7,6 +7,7 @@ public class Interactor : MonoBehaviour {
 		if(Input.GetButton("Interact")){
 			if(InteractiveObject.TryInteract()){
 				//Interaction successful
+
 				//TODO: Play character activation animation
 			}//else = not possible to interact
 		}
