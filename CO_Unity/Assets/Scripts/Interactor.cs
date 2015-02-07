@@ -9,13 +9,17 @@ public class Interactor : MonoBehaviour
 	{
 		get{ return _pickedUpObject; }
 	}
-	
-//	private DistanceJoint2D _handJoint = null;
+
+	static private InteractiveObject _pushedObject = null;
+	static public InteractiveObject PushedObject
+	{
+		get{ return _pushedObject; }
+	}
+
 	private Transform _handTransform = null;
 
 	void Awake()
 	{
-//		_handJoint = GetComponentInChildren<DistanceJoint2D>();
 		_handTransform = transform.FindChild("Hand");
 	}
 
@@ -33,47 +37,91 @@ public class Interactor : MonoBehaviour
 
 		if( Input.GetButtonUp("PickUp"))
 		{
-			foreach( InteractiveObject obj in InteractiveObject.Current )
-				obj.Picked();
-		}
-	}
-
-	public void Pickup( InteractiveObject pickUp )
-	{
-		if( _pickedUpObject.Contains( pickUp ) )
-		{
-			Drop(pickUp);
-		}
-		else
-		{
-			_pickedUpObject.Add( pickUp );
-//			_handJoint.connectedBody = pickUp.GetComponent<Rigidbody2D>();
-
-			DistanceJoint2D newJoint = _handTransform.gameObject.AddComponent<DistanceJoint2D>();
-			newJoint.connectedBody = pickUp.GetComponent<Rigidbody2D>();
-            newJoint.distance = 0.2f;
-		}
-	}
-
-	public void Drop( InteractiveObject pickUp )
-	{
-        foreach (var obj in _pickedUpObject)
-            obj.Dropped();
-		_pickedUpObject.Remove( pickUp );
-//		_handJoint.connectedBody = null;
-		DistanceJoint2D jointToRemove = null;
-
-		DistanceJoint2D[] distanceJoints = _handTransform.GetComponents<DistanceJoint2D>();
-		foreach( DistanceJoint2D joint in distanceJoints )
-		{
-			if( joint.connectedBody == pickUp.GetComponent<Rigidbody2D>() )
+			if( _pickedUpObject.Count > 0 )
 			{
-				jointToRemove = joint;
-				break;
+				foreach( InteractiveObject obj in _pickedUpObject )
+					obj.Dropped();
+
+				Drop();
+			}
+			else
+			{
+				foreach( InteractiveObject obj in InteractiveObject.Current )
+					obj.Picked();
+
+				foreach( InteractiveObject obj in InteractiveObject.Current )
+					Pickup( obj );
 			}
 		}
 
-		Destroy( jointToRemove );
+		if( Input.GetButtonUp("Push"))
+		{
+			foreach( InteractiveObject obj in InteractiveObject.Current )
+				obj.Pushed();
+		}
+	}
+
+	private void Pickup( InteractiveObject pickUp )
+	{
+		if( !_pickedUpObject.Contains( pickUp ) )
+		{
+			_pickedUpObject.Add( pickUp );
+
+			DistanceJoint2D newJoint = _handTransform.gameObject.AddComponent<DistanceJoint2D>();
+			newJoint.connectedBody = pickUp.GetComponent<Rigidbody2D>();
+		}
+	}
+
+	private void Drop(  )
+	{
+		foreach( InteractiveObject pickUp in _pickedUpObject )
+		{
+			DistanceJoint2D jointToRemove = null;
+			
+			DistanceJoint2D[] distanceJoints = _handTransform.GetComponents<DistanceJoint2D>();
+			foreach( DistanceJoint2D joint in distanceJoints )
+			{
+				if( joint.connectedBody == pickUp.GetComponent<Rigidbody2D>() )
+				{
+					jointToRemove = joint;
+					break;
+				}
+			}
+			
+			Destroy( jointToRemove );
+		}
+
+		_pickedUpObject.Clear();
+	}
+
+	public void StartPushing( InteractiveObject pickUp )
+	{
+		if( _pushedObject == pickUp )
+		{
+			StopPushing();
+		}
+		else
+		{
+			pickUp.transform.parent.SetParent( transform );
+
+			pickUp.transform.GetComponentInParent<Rigidbody2D>().isKinematic = true;
+
+			foreach( Collider2D col in pickUp.transform.parent.GetComponentsInChildren<Collider2D>() )
+				col.enabled = false;
+
+			_pushedObject = pickUp;
+		}
+	}
+
+	public void StopPushing()
+	{
+		_pushedObject.transform.GetComponentInParent<Rigidbody2D>().isKinematic = false;
+
+		foreach( Collider2D col in _pushedObject.transform.parent.GetComponentsInChildren<Collider2D>() )
+			col.enabled = true;
+
+		_pushedObject.transform.parent.SetParent( null );
+		_pushedObject = null;
 	}
 
 	public void MoveTo(GameObject to){
