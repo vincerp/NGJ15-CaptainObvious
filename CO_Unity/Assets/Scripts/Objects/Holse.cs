@@ -17,10 +17,4 @@ public class Holse : InteractiveObject {
 			_lineRenderer.SetPosition( i, transform.parent.GetChild(i).position );
 
 	}
-
-	void OnTriggerEnter2D( Collider2D collider )
-	{
-		base.OnTriggerEnter2D(collider);
-		Debug.Log("Holster: on trigger enter");
-	}
 }

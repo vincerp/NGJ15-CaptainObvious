@@ -1,57 +1,76 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Interactor : MonoBehaviour 
 {
-	private InteractiveObject _pickedUpObject = null;
-	private DistanceJoint2D _handJoint = null;
+	static private List<InteractiveObject> _pickedUpObject = new List<InteractiveObject>();
+	static public List<InteractiveObject> CurrentPickedObject 
+	{
+		get{ return _pickedUpObject; }
+	}
+	
+//	private DistanceJoint2D _handJoint = null;
+	private Transform _handTransform = null;
 
 	void Awake()
 	{
-		_handJoint = GetComponentInChildren<DistanceJoint2D>();
+//		_handJoint = GetComponentInChildren<DistanceJoint2D>();
+		_handTransform = transform.FindChild("Hand");
 	}
 
 	void Update () {
-		if(Input.GetButton("Interact")){
-			if(InteractiveObject.isObjectToInteract()){
-				InteractiveObject.Current.Interacted();
-			}
+		if(Input.GetButtonUp("Interact")){
+			foreach( InteractiveObject obj in InteractiveObject.Current )
+				obj.Interacted();
 		}
 
-		if( Input.GetButton("Punch"))
+		if( Input.GetButtonUp("Punch"))
 		{
-			if(InteractiveObject.isObjectToInteract())
-			{
-				InteractiveObject.Current.Punched();
-			}
+			foreach( InteractiveObject obj in InteractiveObject.Current )
+				obj.Punched();
 		}
 
-		if( Input.GetButton("PickUp"))
+		if( Input.GetButtonUp("PickUp"))
 		{
-			if(InteractiveObject.isObjectToInteract())
-			{
-				InteractiveObject.Current.Picked();
-			}
+			foreach( InteractiveObject obj in InteractiveObject.Current )
+				obj.Picked();
 		}
 	}
 
 	public void Pickup( InteractiveObject pickUp )
 	{
-		if( _pickedUpObject != null && _pickedUpObject == pickUp )
+		if( _pickedUpObject.Contains( pickUp ) )
 		{
-			Drop(_pickedUpObject);
+			Drop(pickUp);
 		}
 		else
 		{
-			_pickedUpObject = pickUp;
-			_handJoint.connectedBody = pickUp.GetComponent<Rigidbody2D>();
+			_pickedUpObject.Add( pickUp );
+//			_handJoint.connectedBody = pickUp.GetComponent<Rigidbody2D>();
+
+			DistanceJoint2D newJoint = _handTransform.gameObject.AddComponent<DistanceJoint2D>();
+			newJoint.connectedBody = pickUp.GetComponent<Rigidbody2D>();
 		}
 	}
 
 	public void Drop( InteractiveObject pickUp )
 	{
-		_pickedUpObject = null;
-		_handJoint.connectedBody = null;
+		_pickedUpObject.Remove( pickUp );
+//		_handJoint.connectedBody = null;
+		DistanceJoint2D jointToRemove = null;
+
+		DistanceJoint2D[] distanceJoints = _handTransform.GetComponents<DistanceJoint2D>();
+		foreach( DistanceJoint2D joint in distanceJoints )
+		{
+			if( joint.connectedBody == pickUp.GetComponent<Rigidbody2D>() )
+			{
+				jointToRemove = joint;
+				break;
+			}
+		}
+
+		Destroy( jointToRemove );
 	}
 }
 
