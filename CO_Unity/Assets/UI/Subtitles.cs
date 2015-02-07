@@ -2,11 +2,23 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class Subtitles : MonoBehaviour {
+public class Subtitles : MonoBehaviour 
+{
+	static private Subtitles _instance;
+	static public Subtitles Instance
+	{
+		get{ return _instance; }
+	}
 
 	[SerializeField]float displayTime = 2f;
 
 	Text txt;
+
+	void Awake()
+	{
+		_instance = this;
+	}
+
 	void Start () {
 		txt = GetComponent<Text>();
 	}

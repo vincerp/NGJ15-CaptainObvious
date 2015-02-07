@@ -3,7 +3,8 @@ using System.Collections;
 
 public class Character : MonoBehaviour 
 {
-	public float speechTime = 1f;
+	private float speechTime = 2f;
+	private float repeatPeriod = 5f;
 
 
 	private bool _isDead = false;
@@ -17,6 +18,8 @@ public class Character : MonoBehaviour
 	{
 		_sBubble.Activate( speech );
 		_sBubble.Invoke( "Deactivate", speechTime );
+
+		Subtitles.Instance.DisplaySubtitles( speech );
 	}
 
 	public void Die()
@@ -29,16 +32,22 @@ public class Character : MonoBehaviour
 	{
 		_animator = GetComponent<Animator>();
 		_sBubble = GetComponentInChildren<SpeechBubble>();
+
 		if( _sBubble == null )
 		{
-			GameObject speechGO = GameObject.Instantiate(Resources.Load("Characters/SpeechBubble")) as GameObject;
+			GameObject speechPrefab = Resources.Load("Characters/SpeechBubble", typeof( GameObject) ) as GameObject;
+			GameObject speechGO = GameObject.Instantiate(speechPrefab) as GameObject;
+			speechGO.transform.parent = transform;
+			speechGO.transform.localPosition = speechPrefab.transform.localPosition;
+
 			_sBubble = speechGO.GetComponent<SpeechBubble>();
+			_sBubble.Deactivate();
 		}
 	}
 
-	void Start()
+	IEnumerator Start()
 	{
-
+		yield return StartCoroutine( "RepeatSpeaking", "Help!");
 	}
 
 	void Update()
@@ -46,4 +55,12 @@ public class Character : MonoBehaviour
 
 	}
 
+	IEnumerator RepeatSpeaking(string text)
+	{
+		while( true )
+		{
+			yield return new WaitForSeconds(repeatPeriod);
+			Speak( text );
+		}
+	}
 }
