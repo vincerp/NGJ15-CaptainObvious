@@ -60,9 +60,6 @@ public class DemoScene : MonoBehaviour
 
 	#endregion
 
-	void OnGUI(){
-		GUILayout.Box(""+Input.GetAxis("Move"));
-	}
 
 	// the Update loop contains a very simple example of moving the character around and controlling the animation
 	void Update()
