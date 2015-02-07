@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
+using System.Collections.Generic;
 
 interface Interactable
 {
@@ -13,21 +14,24 @@ interface Interactable
 
 public class InteractiveObject : MonoBehaviour, Interactable {
 
-	static InteractiveObject current = null;
-	static public InteractiveObject Current
+	static List<InteractiveObject> currentItems = new List<InteractiveObject>();
+	static public List<InteractiveObject> Current
 	{
-		get{ return current; }
+		get{ return currentItems; }
 	}
 
+
+	[SerializeField]Transform interactionSign;
+
+	public List<InteractiveObject> objToContainToInteract = new List<InteractiveObject>();
+	
 	[SerializeField]UnityEvent onPicked;
 	[SerializeField]UnityEvent onDropped;
 	[SerializeField]UnityEvent onPunched;
 	[SerializeField]UnityEvent onInteracted;
 	[SerializeField]UnityEvent onPushed;
 
-
-	[SerializeField]Transform interactionSign;
-	Vector3 signScale;
+	private Vector3 signScale;
 
 	void Start(){
 		signScale = interactionSign.localScale;
@@ -38,15 +42,19 @@ public class InteractiveObject : MonoBehaviour, Interactable {
 		if(col.tag == "Player"){
 			//show interaction sign
 			Hashtable args = new Hashtable(){
-				{"scale", Vector3.one},
+				{"scale", signScale},
 				{"time", 0.3f},
 				{"easetype", "easeOutBack"}
 			};
 
 			iTween.ScaleTo(interactionSign.gameObject, args);
-		}
 
-		current = this;
+			if( !currentItems.Contains( this ) )
+			{
+				currentItems.Add( this );
+				Debug.Log("currentItems added " + gameObject.name);
+			}
+		}
 	}
 
 	void OnTriggerExit2D(Collider2D col){
@@ -59,18 +67,43 @@ public class InteractiveObject : MonoBehaviour, Interactable {
 			};
 			
 			iTween.ScaleTo(interactionSign.gameObject, args);
-		}
 
-		if(current == this) current = null;
+			if(currentItems.Contains( this) )
+			{
+				currentItems.Remove( this ) ;
+				Debug.Log("currentItems removed " + gameObject.name);
+			}
+		}
 	}
 
 	public static bool isObjectToInteract(){
-		return current != null;
+		return currentItems.Count > 0;
+	}
+
+	public bool isInteractionValidated( List<InteractiveObject> itemsInHands )
+	{
+		if( objToContainToInteract.Count == 0 )
+			return true;
+
+		bool everythingIsIncluded = true;
+		foreach( InteractiveObject item in objToContainToInteract )
+			if( !itemsInHands.Contains(item) )
+				everythingIsIncluded = false;
+
+		return everythingIsIncluded;
+//		return objToContainToInteract.Contains( itemInHands );
 	}
 
 	virtual public void Picked(){ onPicked.Invoke(); }
 	virtual public void Dropped(){ onDropped.Invoke(); }
 	virtual public void Punched(){ onPushed.Invoke(); }
-	virtual public void Interacted(){ onInteracted.Invoke(); }
+	virtual public void Interacted()
+	{ 
+		Debug.Log( "Interacted: " + gameObject.name);
+		if( isInteractionValidated( Interactor.CurrentPickedObject ) )
+			onInteracted.Invoke(); 
+		else
+			Debug.LogWarning("Put some negative sounds here");
+	}
 	virtual public void Pushed(){ onPushed.Invoke(); }
 }
