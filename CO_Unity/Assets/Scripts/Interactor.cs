@@ -50,7 +50,7 @@ public class Interactor : MonoBehaviour
 					obj.Picked();
 
 				foreach( InteractiveObject obj in InteractiveObject.Current )
-					Pickup( obj );
+					Pickup( obj , obj.handOffset, obj.handDistance);
 			}
 		}
 
@@ -61,14 +61,17 @@ public class Interactor : MonoBehaviour
 		}
 	}
 
-	private void Pickup( InteractiveObject pickUp )
+	private void Pickup( InteractiveObject pickUp , Vector2 handOffset, float jointDistance)
 	{
 		if( !_pickedUpObject.Contains( pickUp ) )
 		{
 			_pickedUpObject.Add( pickUp );
 
+            _handTransform.position = transform.position + new Vector3(handOffset.x, handOffset.y, 0f);
+
 			DistanceJoint2D newJoint = _handTransform.gameObject.AddComponent<DistanceJoint2D>();
 			newJoint.connectedBody = pickUp.GetComponent<Rigidbody2D>();
+            newJoint.distance = jointDistance;
 		}
 	}
 
