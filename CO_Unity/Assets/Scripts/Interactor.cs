@@ -18,9 +18,18 @@ public class Interactor : MonoBehaviour
 
 	private Transform _handTransform = null;
 
+	[Header("Messages")]
+	int timesPicked = 0, timesDropped = 0;
+	[SerializeField]List<CountedMessage> pickUpMessages;
+	[SerializeField]List<CountedMessage> dropMessages;
+	[SerializeField]AudioClip pickupSound, dropSound;
+	
+	Character playerCharacter;
+
 	void Awake()
 	{
 		_handTransform = transform.FindChild("Hand");
+		playerCharacter = GetComponent<Character>();
 	}
 
 	void Update () {
@@ -39,18 +48,33 @@ public class Interactor : MonoBehaviour
 		{
 			if( _pickedUpObject.Count > 0 )
 			{
+				audio.PlayOneShot(dropSound);
+				timesDropped++;
+				foreach(var m in dropMessages){
+					if(timesPicked == m.count) playerCharacter.Speak(m.message);
+				}
+
 				foreach( InteractiveObject obj in _pickedUpObject )
 					obj.Dropped();
 
 				Drop();
+				audio.PlayOneShot(dropSound);
 			}
 			else
 			{
-				foreach( InteractiveObject obj in InteractiveObject.Current )
-					obj.Picked();
+				if(InteractiveObject.Current.Count>0){
+					audio.PlayOneShot(pickupSound);
+					timesPicked++;
+					foreach(var m in pickUpMessages){
+						if(timesPicked == m.count) playerCharacter.Speak(m.message);
+					}
 
-				foreach( InteractiveObject obj in InteractiveObject.Current )
-					Pickup( obj );
+					foreach( InteractiveObject obj in InteractiveObject.Current )
+						obj.Picked();
+
+					foreach( InteractiveObject obj in InteractiveObject.Current )
+						Pickup( obj );
+				}
 			}
 		}
 
