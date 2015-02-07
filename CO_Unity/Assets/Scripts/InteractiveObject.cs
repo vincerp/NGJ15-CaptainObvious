@@ -34,44 +34,58 @@ public class InteractiveObject : MonoBehaviour, Interactable {
 	private Vector3 signScale;
 
 	void Start(){
+
+		if( interactionSign == null )
+			return;
+
 		signScale = interactionSign.localScale;
 		interactionSign.localScale = Vector3.zero;
 	}
 
 	protected void OnTriggerEnter2D(Collider2D col){
-		if(col.tag == "Player"){
-			//show interaction sign
-			Hashtable args = new Hashtable(){
-				{"scale", signScale},
-				{"time", 0.3f},
-				{"easetype", "easeOutBack"}
-			};
+		if(col.tag != "Player")
+			return;
 
-			iTween.ScaleTo(interactionSign.gameObject, args);
-
-			if( !currentItems.Contains( this ) )
-			{
-				currentItems.Add( this );
-			}
+		if( !currentItems.Contains( this ) )
+		{
+			currentItems.Add( this );
+			Debug.Log("OnTriggerEnter2D");
 		}
+
+		if( interactionSign == null )
+			return;
+
+		//show interaction sign
+		Hashtable args = new Hashtable(){
+			{"scale", signScale},
+			{"time", 0.3f},
+			{"easetype", "easeOutBack"}
+		};
+
+		iTween.ScaleTo(interactionSign.gameObject, args);
 	}
 
 	void OnTriggerExit2D(Collider2D col){
-		if(col.tag == "Player"){
-			//hide interaction sign
-			Hashtable args = new Hashtable(){
-				{"scale", Vector3.zero},
-				{"time", 0.3f},
-				{"easetype", "easeInBack"}
-			};
-			
-			iTween.ScaleTo(interactionSign.gameObject, args);
+		if(col.tag != "Player")
+			return;
 
-			if(currentItems.Contains( this) )
-			{
-				currentItems.Remove( this ) ;
-			}
+		if(currentItems.Contains( this) )
+		{
+			Debug.Log("OnTriggerExit2D");
+			currentItems.Remove( this ) ;
 		}
+
+		if( interactionSign == null )
+			return;
+
+		//hide interaction sign
+		Hashtable args = new Hashtable(){
+			{"scale", Vector3.zero},
+			{"time", 0.3f},
+			{"easetype", "easeInBack"}
+		};
+		
+		iTween.ScaleTo(interactionSign.gameObject, args);
 	}
 
 	public static bool isObjectToInteract(){
@@ -96,7 +110,7 @@ public class InteractiveObject : MonoBehaviour, Interactable {
 	virtual public void Punched(){ onPushed.Invoke(); }
 	virtual public void Interacted()
 	{ 
-		Debug.Log( "Interacted: " + gameObject.name);
+		Debug.Log("Interacted: " + gameObject.name);
 		if( isInteractionValidated( Interactor.CurrentPickedObject ) )
 			onInteracted.Invoke(); 
 		else
