@@ -69,6 +69,8 @@ public class Interactor : MonoBehaviour
 
 			DistanceJoint2D newJoint = _handTransform.gameObject.AddComponent<DistanceJoint2D>();
 			newJoint.connectedBody = pickUp.GetComponent<Rigidbody2D>();
+			newJoint.distance = 0.01f;
+			newJoint.maxDistanceOnly = true;
 		}
 	}
 

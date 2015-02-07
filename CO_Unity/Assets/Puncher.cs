@@ -7,6 +7,15 @@ public class Puncher : MonoBehaviour {
 
 	[SerializeField]float radius = 1f;
 
+	int timesPunched = 0;
+	[SerializeField]List<CountedMessage> messages = new List<CountedMessage>();
+
+	Character playerCharacter;
+
+	void Start(){
+		playerCharacter = GetComponentInParent<Character>();
+	}
+
 	void Update () {
 		if(Input.GetButtonDown("Punch")){
 			//TODO: Play animation
@@ -15,6 +24,10 @@ public class Puncher : MonoBehaviour {
 			foreach(var c in allStuff){
 				c.SendMessage("OnPunched", SendMessageOptions.DontRequireReceiver);
 			}
+			timesPunched++;
+			foreach(var m in messages){
+				if(timesPunched == m.count) playerCharacter.Speak(m.message);
+			}
 		}
 	}
 
@@ -22,4 +35,17 @@ public class Puncher : MonoBehaviour {
 		Gizmos.color = Color.cyan;
 		Gizmos.DrawWireSphere(transform.position, radius);
 	}
+}
+
+[System.Serializable]
+public class CountedMessage{
+	public int count;
+	public string message;
+
+	public CountedMessage(int count, string message){
+		this.count = count;
+		this.message = message;
+	}
+
+
 }
