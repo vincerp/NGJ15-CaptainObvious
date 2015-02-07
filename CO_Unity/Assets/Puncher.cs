@@ -8,7 +8,7 @@ public class Puncher : MonoBehaviour {
 	[SerializeField]float radius = 1f;
 
 	void Update () {
-		if(Input.GetButton("Punch")){
+		if(Input.GetButtonDown("Punch")){
 			//TODO: Play animation
 			//TODO: Play swoosh sound
 			var allStuff = Physics2D.OverlapCircleAll(transform.position, radius);
