@@ -37,7 +37,7 @@ public class Character : MonoBehaviour
 		{
 			GameObject speechPrefab = Resources.Load("Characters/SpeechBubble", typeof( GameObject) ) as GameObject;
 			GameObject speechGO = GameObject.Instantiate(speechPrefab) as GameObject;
-			speechGO.transform.parent = transform;
+			speechGO.transform.SetParent( transform );
 			speechGO.transform.localPosition = speechPrefab.transform.localPosition;
 
 			_sBubble = speechGO.GetComponent<SpeechBubble>();
