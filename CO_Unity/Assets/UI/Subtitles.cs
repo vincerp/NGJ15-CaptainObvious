@@ -4,7 +4,7 @@ using System.Collections;
 
 public class Subtitles : MonoBehaviour {
 
-	[SerializeField]float displayTime = 3f;
+	[SerializeField]float displayTime = 2f;
 
 	Text txt;
 	void Start () {

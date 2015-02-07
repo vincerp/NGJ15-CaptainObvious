@@ -60,6 +60,9 @@ public class DemoScene : MonoBehaviour
 
 	#endregion
 
+	void OnGUI(){
+		GUILayout.Box(""+Input.GetAxis("Move"));
+	}
 
 	// the Update loop contains a very simple example of moving the character around and controlling the animation
 	void Update()
@@ -70,7 +73,7 @@ public class DemoScene : MonoBehaviour
 		if( _controller.isGrounded )
 			_velocity.y = 0;
 
-		if( Input.GetKey( KeyCode.RightArrow ) )
+		if( Input.GetAxis("Move") > 0.01f )
 		{
 			normalizedHorizontalSpeed = 1;
 			if( transform.localScale.x < 0f )
@@ -79,7 +82,7 @@ public class DemoScene : MonoBehaviour
 			if( _controller.isGrounded )
 				_animator.Play( Animator.StringToHash( "Run" ) );
 		}
-		else if( Input.GetKey( KeyCode.LeftArrow ) )
+		else if( Input.GetAxis("Move") < -0.01f )
 		{
 			normalizedHorizontalSpeed = -1;
 			if( transform.localScale.x > 0f )
@@ -98,7 +101,7 @@ public class DemoScene : MonoBehaviour
 
 
 		// we can only jump whilst grounded
-		if( _controller.isGrounded && Input.GetKeyDown( KeyCode.UpArrow ) )
+		if( _controller.isGrounded && Input.GetButtonDown("Jump") )
 		{
 			_velocity.y = Mathf.Sqrt( 2f * jumpHeight * -gravity );
 			_animator.Play( Animator.StringToHash( "Jump" ) );
