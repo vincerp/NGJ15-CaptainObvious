@@ -13,7 +13,8 @@ public class DemoScene : MonoBehaviour
 	public float jumpHeight = 3f;
 
 	[SerializeField]AudioClip jumpSound;
-	[SerializeField]AudioClip landSound, stepSound;
+	[SerializeField]AudioClip landSound, stepSound, stepSound2;
+	bool playStepOne = true;
 
 	[HideInInspector]
 	private float normalizedHorizontalSpeed = 0;
@@ -167,8 +168,8 @@ public class DemoScene : MonoBehaviour
 	}
 
 	public void StepSound(){
-		audio.PlayOneShot(stepSound);
-
+		audio.PlayOneShot(((playStepOne)?stepSound:stepSound2));
+		playStepOne = !playStepOne;
 	}
 
 }

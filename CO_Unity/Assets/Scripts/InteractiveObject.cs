@@ -24,6 +24,8 @@ public class InteractiveObject : MonoBehaviour, Interactable {
 	[SerializeField]Transform interactionSign;
 
 	public List<InteractiveObject> objToContainToInteract = new List<InteractiveObject>();
+    public Vector2 handOffset;
+    public float handDistance;
 	
 	[SerializeField]UnityEvent onPicked;
 	[SerializeField]UnityEvent onDropped;
