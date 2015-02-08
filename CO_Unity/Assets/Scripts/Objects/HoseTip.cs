@@ -25,7 +25,7 @@ public class HoseTip : MonoBehaviour
         water = GetComponentInChildren<ParticleSystem>();
         colliderDirection = (extinguishRange.transform.position - hoseHead.transform.position).normalized;
         colliderDistance = Vector3.Distance(extinguishRange.transform.position, hoseHead.transform.position);
-        hand = GameObject.FindGameObjectWithTag("Player").transform.FindChild("Hand");
+        hand = GameObject.Find("Player/Hand").transform;
 
 		sfx = gameObject.AddComponent<AudioSource>();
 		sfx.loop = true;
