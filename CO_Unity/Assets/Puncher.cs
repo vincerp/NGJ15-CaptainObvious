@@ -52,6 +52,7 @@ public class Puncher : MonoBehaviour {
 	IEnumerator PunchHitAudio(){
 		yield return new WaitForSeconds(punchToHitTime);
 		audioSource.PlayOneShot(punchHit);
+        audioSource.volume = 0.5f;
 	}
 
 	void OnDrawGizmos(){
