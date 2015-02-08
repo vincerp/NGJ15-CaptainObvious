@@ -14,6 +14,7 @@ public class GameEventManager : MonoBehaviour
 	{
 //		Invoke ("CallBatman", 3f);
 //		Invoke ("LoadNextLevel", 8f);
+		Invoke ("LoadWithFade", 3f);
 	}
 
 	public void CallBatman()
