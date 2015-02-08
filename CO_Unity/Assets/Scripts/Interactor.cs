@@ -85,6 +85,13 @@ public class Interactor : MonoBehaviour
 				if( obj.onPunched.GetPersistentEventCount() > 0 )
 					obj.Pushed();
 		}
+
+		if( Input.GetButtonUp("Punch"))
+		{
+			foreach( InteractiveObject obj in InteractiveObject.Current )
+				if( obj.onPunched.GetPersistentEventCount() > 0 )
+					obj.Punched();
+		}
 	}
 
 	private void Pickup( InteractiveObject pickUp )
