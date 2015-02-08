@@ -11,7 +11,7 @@ public class Stand : MonoBehaviour
     void Start()
     {
         light = transform.GetChild(0).GetComponent<Rigidbody2D>();
-        puncher = GameObject.FindGameObjectWithTag("Player").transform.FindChild("PunchArea");
+        puncher = GameObject.Find("Player/PunchArea").transform;
         border = GetComponent<Rigidbody2D>();
     }
 
@@ -23,6 +23,7 @@ public class Stand : MonoBehaviour
             light.AddRelativeForce((light.transform.position - puncher.position).normalized * fallForce, ForceMode2D.Impulse);
         }
         border.AddRelativeForce((light.transform.position - puncher.position).normalized * fallForce, ForceMode2D.Impulse);
+        border.AddTorque(fallForce, ForceMode2D.Impulse);
     }
 
 }
