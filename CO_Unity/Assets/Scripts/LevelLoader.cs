@@ -5,7 +5,7 @@ public class LevelLoader : MonoBehaviour {
 
 	[SerializeField]string levelName;
 
-	void Load () {
+	public void Load () {
 		Application.LoadLevel(levelName);
 	}
 }
