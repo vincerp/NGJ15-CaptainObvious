@@ -19,7 +19,7 @@ public class Character : MonoBehaviour
 
 	public void Speak( string speech )
 	{
-		mySource.volume = 1f;
+		mySource.volume = 0.4f;
 		_sBubble.Activate( speech );
 		_sBubble.Invoke( "Deactivate", speechTime );
 
