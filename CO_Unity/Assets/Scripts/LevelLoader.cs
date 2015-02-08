@@ -4,7 +4,7 @@ using System.Collections;
 public class LevelLoader : MonoBehaviour {
 
 	[SerializeField]string levelName;
-	private static LevelLoader _instance;
+	public static LevelLoader _instance;
 	[SerializeField]float prewait = 0f;
 	void Awake()
 	{

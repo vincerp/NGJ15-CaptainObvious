@@ -35,7 +35,8 @@ public class Interactor : MonoBehaviour
 	void Update () {
 		if(Input.GetButtonUp("Interact")){
 			foreach( InteractiveObject obj in InteractiveObject.Current )
-				obj.Interacted();
+				if(obj != null)
+					obj.Interacted();
 		}
 
 		if( Input.GetButtonUp("Punch"))

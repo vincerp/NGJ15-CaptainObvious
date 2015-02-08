@@ -30,7 +30,7 @@ public class GameEventManager : MonoBehaviour
 
 	public void LoadWithFade()
 	{
-		//LevelLoader.LoadWithFade("Level2_FireLevel");
+		LevelLoader._instance.LoadWithFade();
 	}
 
 	public void CheckIfBothStreetLightsAreGreen()
