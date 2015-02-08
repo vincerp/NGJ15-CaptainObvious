@@ -27,11 +27,11 @@ public class InteractiveObject : MonoBehaviour, Interactable {
     public Vector2 handOffset;
     public float handDistance;
 	
-	[SerializeField]UnityEvent onPicked;
-	[SerializeField]UnityEvent onDropped;
-	[SerializeField]UnityEvent onPunched;
-	[SerializeField]UnityEvent onInteracted;
-	[SerializeField]UnityEvent onPushed;
+	[SerializeField]public UnityEvent onPicked;
+	[SerializeField]public UnityEvent onDropped;
+	[SerializeField]public UnityEvent onPunched;
+	[SerializeField]public UnityEvent onInteracted;
+	[SerializeField]public UnityEvent onPushed;
 
 	private Vector3 signScale;
 
