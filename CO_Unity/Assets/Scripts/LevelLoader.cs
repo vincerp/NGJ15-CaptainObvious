@@ -3,7 +3,19 @@ using System.Collections;
 
 public class LevelLoader : MonoBehaviour {
 
-	[SerializeField]string levelName;
+	[SerializeField]static string levelName;
+	private static LevelLoader _instance;
+
+	static public void LoadWithFade(string name)
+	{
+		levelName = name;
+		_instance.LoadWithFade();
+	}
+
+	void Awake()
+	{
+		_instance = this;
+	}
 
 	public void Load () {
 		Application.LoadLevel(levelName);

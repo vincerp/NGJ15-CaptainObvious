@@ -19,7 +19,7 @@ public class Character : MonoBehaviour
 
 	public void Speak( string speech )
 	{
-		mySource.volume = 1f;
+		mySource.volume = 0.4f;
 		_sBubble.Activate( speech );
 		_sBubble.Invoke( "Deactivate", speechTime );
 
@@ -37,6 +37,7 @@ public class Character : MonoBehaviour
 	{
 		_isDead = true;
 
+		Debug.Log( gameObject.name + " is dying");
 		if( _animator != null )
 			_animator.SetTrigger("event_Died");
 	}
@@ -44,6 +45,10 @@ public class Character : MonoBehaviour
 	void Awake()
 	{
 		_animator = GetComponent<Animator>();
+
+		if( gameObject.tag == "OldLady" )
+			_animator = transform.parent.GetComponentInChildren<Animator>();
+
 		_sBubble = GetComponentInChildren<SpeechBubble>();
 
 		if( _sBubble == null )

@@ -111,7 +111,11 @@ public class InteractiveObject : MonoBehaviour, Interactable {
 
 	virtual public void Picked(){ onPicked.Invoke(); }
 	virtual public void Dropped(){ onDropped.Invoke(); }
-	virtual public void Punched(){ onPunched.Invoke(); }
+	virtual public void Punched()
+	{ 
+		Debug.Log( gameObject.name + " is punched" );
+		onPunched.Invoke(); 
+	}
 	virtual public void Interacted()
 	{ 
 		Debug.Log("Interacted: " + gameObject.name);

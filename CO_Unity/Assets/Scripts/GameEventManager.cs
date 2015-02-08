@@ -12,8 +12,8 @@ public class GameEventManager : MonoBehaviour
 
 	public void EndLevelSequence()
 	{
-		Invoke ("CallBatman", 3f);
-		Invoke ("LoadNextLevel", 8f);
+//		Invoke ("CallBatman", 3f);
+//		Invoke ("LoadNextLevel", 8f);
 	}
 
 	public void CallBatman()
@@ -24,7 +24,12 @@ public class GameEventManager : MonoBehaviour
 
 	public void LoadNextLevel()
 	{
-		Application.LoadLevel("Firefighter");
+		Application.LoadLevel("Level2_FireLevel");
+	}
+
+	public void LoadWithFade()
+	{
+		LevelLoader.LoadWithFade("Level2_FireLevel");
 	}
 
 	public void CheckIfBothStreetLightsAreGreen()
