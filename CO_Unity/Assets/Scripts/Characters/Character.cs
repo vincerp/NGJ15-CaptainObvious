@@ -12,14 +12,25 @@ public class Character : MonoBehaviour
 
 	
 	private Animator _animator;
-	
+
+	[SerializeField]AudioClip voiceLoop;
+	AudioSource mySource;
+
 
 	public void Speak( string speech )
 	{
+		mySource.volume = 1f;
 		_sBubble.Activate( speech );
 		_sBubble.Invoke( "Deactivate", speechTime );
 
 		Subtitles.Instance.DisplaySubtitles( speech );
+		StartCoroutine(StopVoice());
+	}
+
+	IEnumerator StopVoice(){
+		yield return new WaitForSeconds(speechTime*0.5f);
+		//mySource.volume = 0f;
+		iTween.AudioTo(mySource.gameObject, 0f, 1f, 0.2f);
 	}
 
 	public void Die()
@@ -43,6 +54,13 @@ public class Character : MonoBehaviour
 			_sBubble = speechGO.GetComponent<SpeechBubble>();
 			_sBubble.Deactivate();
 		}
+
+		mySource = new GameObject("voice", typeof(AudioSource)).audio;
+		mySource.transform.parent = transform;
+		mySource.loop = true;
+		mySource.clip = voiceLoop;
+		mySource.Play();
+		mySource.volume = 0f;
 	}
 
 	/*IEnumerator Start()

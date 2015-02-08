@@ -4,12 +4,12 @@ using UnityEditor;
 
 public class HoseTip : MonoBehaviour
 {
-    public Transform hand;
     public InteractiveObject hoseHead;
     public CircleCollider2D extinguishRange;
     public float tipOffset = 0.5f;
 
     private bool isSpraying = false;
+    private Transform hand;
     private Quaternion rotation;
     private Rigidbody2D rb2d;
     private ParticleSystem water;
@@ -22,6 +22,7 @@ public class HoseTip : MonoBehaviour
         water = GetComponentInChildren<ParticleSystem>();
         colliderDirection = (extinguishRange.transform.position - hoseHead.transform.position).normalized;
         colliderDistance = Vector3.Distance(extinguishRange.transform.position, hoseHead.transform.position);
+        hand = GameObject.FindGameObjectWithTag("Player").transform.FindChild("Hand");
     }
 
     void Update()
@@ -34,7 +35,7 @@ public class HoseTip : MonoBehaviour
 
         if(isSpraying && Interactor.CurrentPickedObject.Contains(hoseHead))
         {
-            transform.position = hand.position + Vector3.right * orientation * tipOffset;
+            transform.position = hand.position + new Vector3(hoseHead.handOffset.x, hoseHead.handOffset.y, 0f) + Vector3.right * orientation * tipOffset;
         }
     }
 
