@@ -10,7 +10,9 @@ public class Trigger2dAction : MonoBehaviour {
 	[SerializeField]UnityEvent onTriggerEnter;
 
 	void OnTriggerEnter2D(Collider2D col){
+
 		if(col.tag == triggerTag){
+
 			if(onlyOnce && triggered) return;
 			onTriggerEnter.Invoke();
 			if(onlyOnce)triggered = true;
@@ -19,6 +21,7 @@ public class Trigger2dAction : MonoBehaviour {
 	
 	void OnCollisionEnter2D(Collision2D col){
 		if(col.gameObject.tag == triggerTag){
+
 			if(onlyOnce && triggered) return;
 			onTriggerEnter.Invoke();
 			if(onlyOnce)triggered = true;

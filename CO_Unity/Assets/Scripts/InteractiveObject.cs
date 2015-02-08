@@ -48,6 +48,8 @@ public class InteractiveObject : MonoBehaviour, Interactable {
 		if(col.tag != "Player")
 			return;
 
+		Debug.Log("OnTriggerEnter2D: " + gameObject.name);
+
 		if( !currentItems.Contains( this ) )
 		{
 			currentItems.Add( this );
@@ -69,6 +71,8 @@ public class InteractiveObject : MonoBehaviour, Interactable {
 	void OnTriggerExit2D(Collider2D col){
 		if(col.tag != "Player")
 			return;
+
+		Debug.Log("OnTriggerExit2D" + gameObject.name);
 
 		if(currentItems.Contains( this) )
 		{
@@ -107,7 +111,7 @@ public class InteractiveObject : MonoBehaviour, Interactable {
 
 	virtual public void Picked(){ onPicked.Invoke(); }
 	virtual public void Dropped(){ onDropped.Invoke(); }
-	virtual public void Punched(){ onPushed.Invoke(); }
+	virtual public void Punched(){ onPunched.Invoke(); }
 	virtual public void Interacted()
 	{ 
 		Debug.Log("Interacted: " + gameObject.name);

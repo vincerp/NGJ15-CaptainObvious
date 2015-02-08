@@ -36,7 +36,9 @@ public class Character : MonoBehaviour
 	public void Die()
 	{
 		_isDead = true;
-		_animator.SetTrigger("event_Died");
+
+		if( _animator != null )
+			_animator.SetTrigger("event_Died");
 	}
 
 	void Awake()
@@ -80,5 +82,22 @@ public class Character : MonoBehaviour
 			yield return new WaitForSeconds(repeatPeriod);
 			Speak( text );
 		}
+	}
+
+	public void MoveCharacterTo( Transform point )
+	{
+		Vector3 pos = point.transform.position;
+		pos.y = transform.parent.position.y;
+
+		Hashtable args = new Hashtable(){
+			{"position", pos},
+			{"time", 20f},
+			{"easetype", "linear"}
+		};
+		
+		iTween.MoveTo(transform.parent.gameObject, args);
+
+
+//		iTween.MoveTo (transform.parent.gameObject, pos, 10f);
 	}
 }
