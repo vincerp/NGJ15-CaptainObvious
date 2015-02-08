@@ -73,7 +73,8 @@ public class Interactor : MonoBehaviour
 						obj.Picked();
 
 					foreach( InteractiveObject obj in InteractiveObject.Current )
-						Pickup( obj );
+						if( obj.onPicked.GetPersistentEventCount() > 0 )
+							Pickup( obj );
 				}
 			}
 		}
@@ -81,7 +82,8 @@ public class Interactor : MonoBehaviour
 		if( Input.GetButtonUp("Push"))
 		{
 			foreach( InteractiveObject obj in InteractiveObject.Current )
-				obj.Pushed();
+				if( obj.onPunched.GetPersistentEventCount() > 0 )
+					obj.Pushed();
 		}
 	}
 
