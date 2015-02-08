@@ -16,6 +16,9 @@ public class HoseTip : MonoBehaviour
     private Vector3 colliderDirection;
     private float colliderDistance;
 
+	[SerializeField]AudioClip hoseSoundLoop;
+	AudioSource sfx;
+
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -23,6 +26,12 @@ public class HoseTip : MonoBehaviour
         colliderDirection = (extinguishRange.transform.position - hoseHead.transform.position).normalized;
         colliderDistance = Vector3.Distance(extinguishRange.transform.position, hoseHead.transform.position);
         hand = GameObject.FindGameObjectWithTag("Player").transform.FindChild("Hand");
+
+		sfx = gameObject.AddComponent<AudioSource>();
+		sfx.loop = true;
+		sfx.clip = hoseSoundLoop;
+		sfx.Play();
+		sfx.volume = 0f;
     }
 
     void Update()
@@ -53,14 +62,16 @@ public class HoseTip : MonoBehaviour
     {
         water.startSpeed = 5f;
         water.emissionRate = 150f;
-        extinguishRange.enabled = true;
+		extinguishRange.enabled = true;
+		sfx.volume = 1f;
     }
 
     private void TurnWaterOff()
     {
         water.startSpeed = 0.2f;
         water.emissionRate = 3f;
-        extinguishRange.enabled = false;
+		extinguishRange.enabled = false;
+		sfx.volume = 0f;
     }
 
     public void Drop()
