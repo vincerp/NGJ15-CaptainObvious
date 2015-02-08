@@ -3,14 +3,8 @@ using System.Collections;
 
 public class LevelLoader : MonoBehaviour {
 
-	[SerializeField]static string levelName;
+	[SerializeField]string levelName;
 	private static LevelLoader _instance;
-
-	static public void LoadWithFade(string name)
-	{
-		levelName = name;
-		_instance.LoadWithFade();
-	}
 
 	void Awake()
 	{
