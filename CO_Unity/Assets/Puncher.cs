@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Puncher : MonoBehaviour {
 
@@ -33,7 +34,7 @@ public class Puncher : MonoBehaviour {
 				foreach(var c in allStuff){
 					c.SendMessage("OnPunched", SendMessageOptions.DontRequireReceiver);
 				}
-				if(allStuff.Length > 0) StartCoroutine(PunchHitAudio());
+				if(allStuff.Any(x => x.GetComponent<Punchable>() != null)) StartCoroutine(PunchHitAudio());
 				audioSource.PlayOneShot(punchAudio);
 				timesPunched++;
 				foreach(var m in messages){
