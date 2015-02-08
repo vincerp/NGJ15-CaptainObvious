@@ -15,4 +15,12 @@ public class Trigger2dAction : MonoBehaviour {
 			if(onlyOnce)triggered = true;
 		}
 	}
+	
+	void OnCollisionEnter2D(Collision2D col){
+		if(col.gameObject.tag == "Player"){
+			if(onlyOnce && triggered) return;
+			onTriggerEnter.Invoke();
+			if(onlyOnce)triggered = true;
+		}
+	}
 }

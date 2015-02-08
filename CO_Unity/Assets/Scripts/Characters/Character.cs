@@ -3,8 +3,8 @@ using System.Collections;
 
 public class Character : MonoBehaviour 
 {
-	private float speechTime = 2f;
-	private float repeatPeriod = 5f;
+	[SerializeField]private float speechTime = 2f;
+	[SerializeField]private float repeatPeriod = 5f;
 
 
 	private bool _isDead = false;
@@ -45,10 +45,10 @@ public class Character : MonoBehaviour
 		}
 	}
 
-	IEnumerator Start()
+	/*IEnumerator Start()
 	{
 		yield return StartCoroutine( "RepeatSpeaking", "Help!");
-	}
+	}*/
 
 	void Update()
 	{
