@@ -15,9 +15,13 @@ public class InfiniteMusic : MonoBehaviour {
 	}
 
 	void OnLevelWasLoaded(int lvl){
+		print (lvl);
 		bool tryCinematic = levelsWithCinematicMusic.Contains(lvl);
 
+		print(""+tryCinematic+isCinematic);
 		if(tryCinematic != isCinematic)
-			iTween.AudioTo(gameObject, ((isCinematic)?cinematicMusic:gameMusic), 1f, 0.25f);
+			iTween.AudioTo(gameObject, ((tryCinematic)?cinematicMusic:gameMusic), 1f, 0.25f);
+
+		isCinematic = tryCinematic;
 	}
 }
