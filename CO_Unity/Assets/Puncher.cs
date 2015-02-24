@@ -9,8 +9,8 @@ public class Puncher : MonoBehaviour {
 
 	[SerializeField]float radius = 1f;
 	
-	int timesPunched = 0;
-	int timesNotPunched = 0;
+	public static int timesPunched = 0;
+	public static int timesNotPunched = 0;
 	[SerializeField]List<CountedMessage> messages = new List<CountedMessage>();
 	[SerializeField]List<CountedMessage> messagesNotPunched = new List<CountedMessage>();
 

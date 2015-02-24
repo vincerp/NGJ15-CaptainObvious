@@ -6,16 +6,27 @@ public class Trigger2dAction : MonoBehaviour {
 	[SerializeField]string triggerTag = "Player";
 	[SerializeField]bool onlyOnce = false;
 	bool triggered = false;
-
+	
 	[SerializeField]UnityEvent onTriggerEnter;
-
+	[SerializeField]UnityEvent onTriggerExit;
+	
 	void OnTriggerEnter2D(Collider2D col){
-
+		
 		if(col.tag == triggerTag){
-
+			
 			if(onlyOnce && triggered) return;
 			onTriggerEnter.Invoke();
 			if(onlyOnce)triggered = true;
+		}
+	}
+
+	void OnTriggerExit2D(Collider2D col){
+		
+		if(col.tag == triggerTag){
+			
+			//if(onlyOnce && triggered) return;
+			onTriggerExit.Invoke();
+			//if(onlyOnce)triggered = true;
 		}
 	}
 	

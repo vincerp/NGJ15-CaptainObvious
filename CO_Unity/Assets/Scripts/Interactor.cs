@@ -19,7 +19,7 @@ public class Interactor : MonoBehaviour
 	private Transform _handTransform = null;
 
 	[Header("Messages")]
-	int timesPicked = 0, timesDropped = 0;
+	public static int timesPicked = 0, timesDropped = 0;
 	[SerializeField]List<CountedMessage> pickUpMessages;
 	[SerializeField]List<CountedMessage> dropMessages;
 	[SerializeField]AudioClip pickupSound, dropSound;

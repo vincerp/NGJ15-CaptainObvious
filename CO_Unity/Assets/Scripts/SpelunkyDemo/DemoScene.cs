@@ -26,14 +26,14 @@ public class DemoScene : MonoBehaviour
 	
 	Character playerCharacter;
 	[Header("Movement messages:")]
-	[SerializeField]float timeSpentStopped = 0f;
+	static float timeSpentStopped = 0f;
 	[SerializeField]List<InputAwareMessage> notWalkingMessages;
-	[SerializeField]float timeSpentWalking = 0f;
+	static float timeSpentWalking = 0f;
 	[SerializeField]List<InputAwareMessage> walkingMessages;
 	
 	[Header("Input messages:")]
 	[SerializeField]List<CountedMessage> jumpMessages;
-	int timesJumped = 0;
+	static int timesJumped = 0;
 
 	void Awake()
 	{
@@ -47,6 +47,13 @@ public class DemoScene : MonoBehaviour
 		playerCharacter = GetComponent<Character>();
 	}
 
+	public void ResetMessages(){
+		timeSpentStopped = timeSpentWalking = 0f;
+		timesJumped = 0;
+
+		Interactor.timesPicked = Interactor.timesDropped = 0;
+		Puncher.timesPunched = Puncher.timesNotPunched = 0;
+	}
 
 	#region Event Listeners
 
