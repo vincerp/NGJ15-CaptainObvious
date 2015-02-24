@@ -5,6 +5,7 @@ public class Character : MonoBehaviour
 {
 	[SerializeField]private float speechTime = 2f;
 	[SerializeField]private float repeatPeriod = 5f;
+	[SerializeField]Vector3 bubblePosition;
 
 
 	private bool _isDead = false;
@@ -55,8 +56,9 @@ public class Character : MonoBehaviour
 		{
 			GameObject speechPrefab = Resources.Load("Characters/SpeechBubble", typeof( GameObject) ) as GameObject;
 			GameObject speechGO = GameObject.Instantiate(speechPrefab) as GameObject;
+			speechGO.transform.position = transform.position + bubblePosition;
 			speechGO.transform.SetParent( transform );
-			speechGO.transform.localPosition = speechPrefab.transform.localPosition;
+			speechGO.transform.localScale = Vector3.one*0.2f;
 
 			_sBubble = speechGO.GetComponent<SpeechBubble>();
 			_sBubble.Deactivate();
@@ -104,5 +106,10 @@ public class Character : MonoBehaviour
 
 
 //		iTween.MoveTo (transform.parent.gameObject, pos, 10f);
+	}
+
+	void OnDrawGizmosSelected(){
+		Gizmos.color = Color.green;
+		Gizmos.DrawWireSphere(transform.position + bubblePosition, 0.5f);
 	}
 }
