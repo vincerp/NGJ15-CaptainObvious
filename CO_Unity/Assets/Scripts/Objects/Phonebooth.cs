@@ -4,6 +4,8 @@ using System.Collections;
 public class Phonebooth : MonoBehaviour {
 
     public string fireDeptText;
+
+	[SerializeField]float waitForBubble = 8.1f;
 	// Use this for initialization
 	void Start () {
 	
@@ -22,7 +24,7 @@ public class Phonebooth : MonoBehaviour {
     IEnumerator DoCall()
     {
         audio.Play();
-        yield return new WaitForSeconds(audio.clip.length);
+        yield return new WaitForSeconds(waitForBubble);
         GetComponent<Character>().Speak(fireDeptText);
     }
 }

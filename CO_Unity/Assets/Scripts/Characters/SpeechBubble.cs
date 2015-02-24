@@ -11,6 +11,8 @@ public class SpeechBubble : MonoBehaviour
 	private Vector3 currentScale;
 	private float originalLettersCount;
 
+	[SerializeField]float someNumber = 0.9f;
+
 	void Awake()
 	{
 		_speechTextRenderer = GetComponentInChildren<Text>();
@@ -28,7 +30,7 @@ public class SpeechBubble : MonoBehaviour
 		{
 			_speechTextRenderer.text = text;
 
-			_speechBubbleRenderer.transform.localScale = new Vector3(originalScale.x * ((float) text.Length / (float) originalLettersCount), 
+			_speechBubbleRenderer.transform.localScale = new Vector3(originalScale.x * ((float) text.Length / (float) originalLettersCount) * someNumber, 
 			                                                        originalScale.y, originalScale.z);
 
 		}
