@@ -6,6 +6,7 @@ public class Character : MonoBehaviour
 	[SerializeField]private float speechTime = 2f;
 	[SerializeField]private float repeatPeriod = 5f;
 	[SerializeField]Vector3 bubblePosition;
+	[SerializeField]float bubbleScale = 0.2f;
 
 
 	private bool _isDead = false;
@@ -58,7 +59,8 @@ public class Character : MonoBehaviour
 			GameObject speechGO = GameObject.Instantiate(speechPrefab) as GameObject;
 			speechGO.transform.position = transform.position + bubblePosition;
 			speechGO.transform.SetParent( transform );
-			speechGO.transform.localScale = Vector3.one*0.2f;
+			speechGO.transform.localScale = Vector3.one*bubbleScale;
+			//TODO: Rotate the bubbles properly
 
 			_sBubble = speechGO.GetComponent<SpeechBubble>();
 			_sBubble.Deactivate();

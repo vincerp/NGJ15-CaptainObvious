@@ -169,7 +169,7 @@ public class Interactor : MonoBehaviour
 	IEnumerator MovePostFade(Vector3 to){
 		print(to);
 		yield return new WaitForSeconds(0.3f);
-		transform.position = to;
+		transform.position = to+Vector3.up*0.5f;
 		iTween.CameraFadeTo(0f, 0.3f);
 	}
 }
