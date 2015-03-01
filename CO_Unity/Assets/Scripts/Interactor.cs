@@ -32,6 +32,12 @@ public class Interactor : MonoBehaviour
 		playerCharacter = GetComponent<Character>();
 	}
 
+	void OnLevelWasLoaded()
+	{
+		_pickedUpObject.Clear();
+		_pushedObject = null;
+	}
+
 	void Update () {
 		if(Input.GetButtonUp("Interact")){
 			foreach( InteractiveObject obj in InteractiveObject.Current )

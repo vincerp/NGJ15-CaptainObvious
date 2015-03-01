@@ -35,6 +35,11 @@ public class InteractiveObject : MonoBehaviour, Interactable {
 
 	private Vector3 signScale;
 
+	void OnLevelWasLoaded()
+	{
+		currentItems.Clear();
+	}
+
 	void Start(){
 
 		if( interactionSign == null )
