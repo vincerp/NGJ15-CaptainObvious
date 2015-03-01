@@ -42,6 +42,8 @@ public class Character : MonoBehaviour
 		Debug.Log( gameObject.name + " is dying");
 		if( _animator != null )
 			_animator.SetTrigger("event_Died");
+
+		iTween.Stop(transform.parent.gameObject);
 	}
 
 	void Awake()
