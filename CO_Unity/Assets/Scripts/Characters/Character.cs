@@ -105,7 +105,7 @@ public class Character : MonoBehaviour
 		};
 		
 		iTween.MoveTo(transform.parent.gameObject, args);
-
+		_animator.SetBool("isWalking", true);
 
 //		iTween.MoveTo (transform.parent.gameObject, pos, 10f);
 	}

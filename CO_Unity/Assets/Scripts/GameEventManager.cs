@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GameEventManager : MonoBehaviour 
 {
-	public GameObject heroComicsEffectPrefab;
+	//public GameObject heroComicsEffectPrefab;
 
 	public GameObject street1Light;
 	public GameObject street2Light;
@@ -17,11 +17,11 @@ public class GameEventManager : MonoBehaviour
 		Invoke ("LoadWithFade", 3f);
 	}
 
-	public void CallBatman()
+	/*public void CallBatman()
 	{
 		Instantiate(heroComicsEffectPrefab, Camera.main.ScreenToWorldPoint( new Vector3( Screen.width / 2f, Screen.height /2f,
 		                                                                                -Camera.main.transform.position.z)), Quaternion.identity );
-	}
+	}*/
 
 	public void LoadNextLevel()
 	{
