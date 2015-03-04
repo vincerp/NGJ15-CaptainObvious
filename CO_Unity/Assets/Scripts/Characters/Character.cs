@@ -21,6 +21,9 @@ public class Character : MonoBehaviour
 
 	public void Speak( string speech )
 	{
+		if( _isDead )
+			return;
+
 		mySource.volume = 0.4f;
 		_sBubble.Activate( speech );
 		_sBubble.Invoke( "Deactivate", speechTime );
@@ -42,6 +45,11 @@ public class Character : MonoBehaviour
 		Debug.Log( gameObject.name + " is dying");
 		if( _animator != null )
 			_animator.SetTrigger("event_Died");
+
+		iTween.Stop(transform.parent.gameObject);
+
+		_sBubble.CancelInvoke("Deactivate");
+		_sBubble.Deactivate();
 	}
 
 	void Awake()
@@ -95,6 +103,9 @@ public class Character : MonoBehaviour
 
 	public void MoveCharacterTo( Transform point )
 	{
+		if( _isDead )
+			return;
+
 		Vector3 pos = point.transform.position;
 		pos.y = transform.parent.position.y;
 

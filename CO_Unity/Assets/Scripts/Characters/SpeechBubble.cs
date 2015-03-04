@@ -46,7 +46,8 @@ public class SpeechBubble : MonoBehaviour
 	void Update()
 	{
 		_speechTextRenderer.transform.localScale = new Vector3(currentScale.x * 
-		                                                       Mathf.Sign(transform.parent.localScale.x), 
+		                                                       //Mathf.Sign(transform.parent.localScale.x), 
+		                                                       Mathf.Sign(transform.lossyScale.x), 
 		                                                       currentScale.y, currentScale.z);
 	}
 }
